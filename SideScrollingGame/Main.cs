@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace _2DSideScrollingGame;
+namespace _SideScrollingGame;
 
 public class Game1 : Game
 {
