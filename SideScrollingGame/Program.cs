@@ -1,3 +1,3 @@
 ﻿
-using var game = new _SideScrollingGame.Game1();
+using var game = new _SideScrollingGame.Main();
 game.Run();

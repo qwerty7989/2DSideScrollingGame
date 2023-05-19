@@ -1,78 +1,65 @@
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using SideScrollingGame.Scenes; // ! Import every file from ./Scenes folders
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 
-namespace PuzzleBobbleHell.Manager
+using _SideScrollingGame.Scenes;
+
+namespace _SideScrollingGame.Manager
 {
     public class SceneManager
     {
-        private GameScene currentGameScene;
+        // ? Variable
+        private GameScene _currentGameScene;
         public enum SceneName
         {
             // ? Each Scene files are referenced here.
-            MenuScene,
-            SettingScene,
-            CreditScene,
-            PlayScene,
-            LoadingScene,
-            StoryScene,
-            EndStageScene,
-            EndGameScene,
+            IntroScene
         }
 
+        // ? Function
         public SceneManager()
         {
-            currentGameScene= new PlaceholderScene();
+            _currentGameScene = new IntroScene();
         }
 
-        public void changeScene(SceneName sceneName)
+            // ! Load some scene and unload it.
+
+            // ! Load regular scene
+
+
+        public void LoadContent()
         {
-            switch (sceneName)
-            {
-                case SceneName.MenuScene:
-                    currentGameScene = new MenuScene();
-                    break;
-                case SceneName.SettingScene:
-                    currentGameScene = new SettingScene();
-                    break;
-                case SceneName.CreditScene:
-                    currentGameScene = new CreditScene();
-                    break;
-                case SceneName.PlayScene:
-                    currentGameScene = new PlayScene();
-                    break;
-                case SceneName.LoadingScene:
-                    currentGameScene = new LoadingScene();
-                    break;
-                case SceneName.StoryScene:
-                    currentGameScene = new StoryScene();
-                    break;
-                case SceneName.EndStageScene:
-                    currentGameScene = new EndStageScene();
-                    break;
-                case SceneName.EndGameScene:
-                    currentGameScene = new EndGameScene();
-                    break;
-            }
-            LoadContent(Singleton.Instance.contentManager);
+            _currentGameScene.LoadContent();
         }
-        public void LoadContent(ContentManager Content)
-        {
-            currentGameScene.LoadContent(Content);
-        }
+
         public void UnloadContent()
         {
-            currentGameScene.UnloadContent();
-        }
-        public void Update(GameTime gameTime)
-        {
-            currentGameScene.Update(gameTime);
+            _currentGameScene.UnloadContent();
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Update(GameTime gameTime)
         {
-            currentGameScene.Draw(spriteBatch);
+            _currentGameScene.Update(gameTime);
         }
+
+        public void Draw(SpriteBatch _spriteBatch)
+        {
+            _currentGameScene.Draw(_spriteBatch);
+        }
+
+        // ? Singleton
+        private static SceneManager instance;
+        public static SceneManager Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new SceneManager();
+                }
+                return instance;
+            }
+        }
+
     }
 }

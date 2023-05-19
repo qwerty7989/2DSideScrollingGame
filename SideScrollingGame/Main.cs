@@ -1,24 +1,33 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Content;
+
+using _SideScrollingGame.Content;
+using _SideScrollingGame.Manager;
 
 namespace _SideScrollingGame;
 
-public class Game1 : Game
+public class Main : Game
 {
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
 
-    public Game1()
+    public Main()
     {
         _graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
+        ContentManagers.Instance.contentManagerRoot = Content;
+        ContentManagers.Instance.contentManager = new ContentManager(Content.ServiceProvider, Content.RootDirectory);
         IsMouseVisible = true;
     }
 
     protected override void Initialize()
     {
-        // TODO: Add your initialization logic here
+        _graphics.PreferredBackBufferWidth = 1600;
+        _graphics.PreferredBackBufferHeight = 900;
+        _graphics.IsFullScreen = false;
+        _graphics.ApplyChanges();
 
         base.Initialize();
     }
@@ -27,7 +36,8 @@ public class Game1 : Game
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-        // TODO: use this.Content to load your game content here
+        SceneManager.Instance.LoadContent();
+
     }
 
     protected override void Update(GameTime gameTime)
@@ -35,17 +45,20 @@ public class Game1 : Game
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
 
-        // TODO: Add your update logic here
+        SceneManager.Instance.Update(gameTime);
 
         base.Update(gameTime);
     }
 
     protected override void Draw(GameTime gameTime)
     {
-        GraphicsDevice.Clear(Color.CornflowerBlue);
+        GraphicsDevice.Clear(Color.Black);
+        _spriteBatch.Begin();
 
-        // TODO: Add your drawing code here
+        SceneManager.Instance.Draw(_spriteBatch);
 
+        _spriteBatch.End();
+        _graphics.BeginDraw();
         base.Draw(gameTime);
     }
 }
