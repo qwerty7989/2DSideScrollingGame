@@ -10,26 +10,46 @@ namespace _SideScrollingGame.Manager
     {
         // ? Variable
         private GameScene _currentGameScene;
+        private GameScene[] _listGameScene;
         public enum SceneName
         {
             // ? Each Scene files are referenced here.
+            TestScene,
             IntroScene
         }
 
         // ? Function
         public SceneManager()
         {
-            _currentGameScene = new IntroScene();
+            //_currentGameScene = new IntroScene();
+            _listGameScene = new GameScene[2];
         }
 
-            // ! Load some scene and unload it.
+        public void AddScene(SceneName sceneName)
+        {
+        }
 
-            // ! Load regular scene
-
+        public void ChangeScene(SceneName sceneName)
+        {
+            switch (sceneName)
+            {
+                case SceneName.IntroScene:
+                    _currentGameScene = new IntroScene();
+                    break;
+                case SceneName.TestScene:
+                    _currentGameScene = new TestScene();
+                    break;
+            }
+            LoadContent();
+        }
 
         public void LoadContent()
         {
-            _currentGameScene.LoadContent();
+            //_currentGameScene.LoadContent();
+            foreach (GameScene scene in _listGameScene)
+            {
+                scene.LoadContent();
+            }
         }
 
         public void UnloadContent()
@@ -39,12 +59,20 @@ namespace _SideScrollingGame.Manager
 
         public void Update(GameTime gameTime)
         {
-            _currentGameScene.Update(gameTime);
+            //_currentGameScene.Update(gameTime);
+            foreach (GameScene scene in _listGameScene)
+            {
+                scene.Update(gameTime);
+            }
         }
 
-        public void Draw(SpriteBatch _spriteBatch)
+        public void Draw(SpriteBatch spriteBatch)
         {
-            _currentGameScene.Draw(_spriteBatch);
+            //_currentGameScene.Draw(_spriteBatch);
+            foreach (GameScene scene in _listGameScene)
+            {
+                scene.Draw(spriteBatch);
+            }
         }
 
         // ? Singleton
