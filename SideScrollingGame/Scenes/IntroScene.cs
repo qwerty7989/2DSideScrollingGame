@@ -1,8 +1,9 @@
-using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 
 using _SideScrollingGame.Content;
+using _SideScrollingGame.Manager;
 
 namespace _SideScrollingGame.Scenes
 {
@@ -22,6 +23,10 @@ namespace _SideScrollingGame.Scenes
 
         public void Update(GameTime gameTime)
         {
+            if (Keyboard.GetState().IsKeyDown(Keys.F))
+                SceneManager.Instance.AddScene(SceneManager.SceneName.TestScene, 0);
+            if (Keyboard.GetState().IsKeyDown(Keys.G))
+                SceneManager.Instance.ChangeScene(SceneManager.SceneName.TestScene);
         }
 
         public void Draw(SpriteBatch spriteBatch)

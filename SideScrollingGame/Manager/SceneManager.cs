@@ -9,11 +9,10 @@ namespace _SideScrollingGame.Manager
     public class SceneManager
     {
         // ? Variable
-        private GameScene _currentGameScene;
-        private GameScene[] _listGameScene;
+        private GameScene[,] _listGameScene;
+        private int[] _indexList;
         public enum SceneName
         {
-            // ? Each Scene files are referenced here.
             TestScene,
             IntroScene
         }
@@ -21,25 +20,31 @@ namespace _SideScrollingGame.Manager
         // ? Function
         public SceneManager()
         {
-            //_currentGameScene = new IntroScene();
-            _listGameScene = new GameScene[2];
+            _listGameScene = new GameScene[7,50];
+            _indexList = new int[50];
+            AddScene(SceneName.IntroScene, 0);
         }
 
-        public void AddScene(SceneName sceneName)
-        {
-        }
-
-        public void ChangeScene(SceneName sceneName)
+        public void AddScene(SceneName sceneName, int layerLevel)
         {
             switch (sceneName)
             {
                 case SceneName.IntroScene:
-                    _currentGameScene = new IntroScene();
+                    _listGameScene[layerLevel,_indexList[layerLevel]] = new IntroScene();
                     break;
                 case SceneName.TestScene:
-                    _currentGameScene = new TestScene();
+                    _listGameScene[layerLevel,_indexList[layerLevel]] = new TestScene();
                     break;
             }
+            _indexList[layerLevel]++;
+            LoadContent();
+        }
+
+        public void ChangeScene(SceneName sceneName)
+        {
+            _listGameScene = new GameScene[7,50];
+            _indexList = new int[50];
+            AddScene(sceneName, 0);
             LoadContent();
         }
 
@@ -48,13 +53,18 @@ namespace _SideScrollingGame.Manager
             //_currentGameScene.LoadContent();
             foreach (GameScene scene in _listGameScene)
             {
-                scene.LoadContent();
+                    if (scene != null)
+                        scene.LoadContent();
             }
         }
 
         public void UnloadContent()
         {
-            _currentGameScene.UnloadContent();
+            foreach (GameScene scene in _listGameScene)
+            {
+                    if (scene != null)
+                        scene.UnloadContent();
+            }
         }
 
         public void Update(GameTime gameTime)
@@ -62,7 +72,8 @@ namespace _SideScrollingGame.Manager
             //_currentGameScene.Update(gameTime);
             foreach (GameScene scene in _listGameScene)
             {
-                scene.Update(gameTime);
+                    if (scene != null)
+                        scene.Update(gameTime);
             }
         }
 
@@ -71,7 +82,8 @@ namespace _SideScrollingGame.Manager
             //_currentGameScene.Draw(_spriteBatch);
             foreach (GameScene scene in _listGameScene)
             {
-                scene.Draw(spriteBatch);
+                    if (scene != null)
+                        scene.Draw(spriteBatch);
             }
         }
 

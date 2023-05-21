@@ -26,8 +26,8 @@ namespace _SideScrollingGame.Scenes
 
         public void Update(GameTime gameTime)
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.G))
-                SceneManager.Instance.ChangeScene(SceneManager.SceneName.IntroScene);
+            //if (Keyboard.GetState().IsKeyDown(Keys.G))
+            //    SceneManager.Instance.ChangeScene(SceneManager.SceneName.IntroScene);
             _player.Update(gameTime);
         }
 
