@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace _SideScrollingGame.Objects
 {
-    public class Animation : GameObject
+    public class Animation
     {
         private Texture2D Texture;
         private Rectangle[] Rectangles;
@@ -15,8 +15,9 @@ namespace _SideScrollingGame.Objects
         private float Threshold;
 
         private int Index = 0;
+        private int PlayCount = 0;
 
-        public Animation((Texture2D, Rectangle[]) sprite, Vector2 position, float threshold)
+        public Animation((Texture2D, Rectangle[]) sprite, Vector2 position, float threshold = 150)
         {
             Texture = sprite.Item1;
             Rectangles = sprite.Item2;
@@ -33,6 +34,25 @@ namespace _SideScrollingGame.Objects
         {
         }
 
+        public bool IsDone()
+        {
+            if (PlayCount > 0)
+            {
+                PlayCount = 0;
+                return true;
+            }
+            return false;
+        }
+
+        public bool IsDone(int index)
+        {
+            if (Index > index)
+            {
+                return true;
+            }
+            return false;
+        }
+
         public void Update(GameTime gameTime)
         {
             if (Timer > Threshold)
@@ -42,6 +62,7 @@ namespace _SideScrollingGame.Objects
                 if (Index == Amount)
                 {
                     Index = 0;
+                    PlayCount++;
                 }
 
                 Timer = 0;
@@ -52,9 +73,16 @@ namespace _SideScrollingGame.Objects
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, Vector2 Position, bool _playerDirection)
         {
-            spriteBatch.Draw(Texture, Position, Rectangles[Index], Color.White);
+            if (_playerDirection)
+            {
+                spriteBatch.Draw(Texture, Position, Rectangles[Index], Color.White);
+            }
+            else
+            {
+                spriteBatch.Draw(Texture, Position, Rectangles[Index], Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.FlipHorizontally, 0f);
+            }
         }
     }
 }

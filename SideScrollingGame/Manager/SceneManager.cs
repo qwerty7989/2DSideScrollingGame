@@ -29,11 +29,11 @@ namespace _SideScrollingGame.Manager
         {
             switch (sceneName)
             {
-                case SceneName.IntroScene:
-                    _listGameScene[layerLevel,_indexList[layerLevel]] = new IntroScene();
-                    break;
                 case SceneName.TestScene:
                     _listGameScene[layerLevel,_indexList[layerLevel]] = new TestScene();
+                    break;
+                case SceneName.IntroScene:
+                    _listGameScene[layerLevel,_indexList[layerLevel]] = new IntroScene();
                     break;
             }
             _indexList[layerLevel]++;
@@ -48,13 +48,14 @@ namespace _SideScrollingGame.Manager
             LoadContent();
         }
 
+        // ? Default function
         public void LoadContent()
         {
             //_currentGameScene.LoadContent();
             foreach (GameScene scene in _listGameScene)
             {
-                    if (scene != null)
-                        scene.LoadContent();
+                if (scene != null)
+                    scene.LoadContent();
             }
         }
 
@@ -62,8 +63,8 @@ namespace _SideScrollingGame.Manager
         {
             foreach (GameScene scene in _listGameScene)
             {
-                    if (scene != null)
-                        scene.UnloadContent();
+                if (scene != null)
+                    scene.UnloadContent();
             }
         }
 
@@ -72,8 +73,8 @@ namespace _SideScrollingGame.Manager
             //_currentGameScene.Update(gameTime);
             foreach (GameScene scene in _listGameScene)
             {
-                    if (scene != null)
-                        scene.Update(gameTime);
+                if (scene != null)
+                    scene.Update(gameTime);
             }
         }
 
@@ -82,8 +83,8 @@ namespace _SideScrollingGame.Manager
             //_currentGameScene.Draw(_spriteBatch);
             foreach (GameScene scene in _listGameScene)
             {
-                    if (scene != null)
-                        scene.Draw(spriteBatch);
+                if (scene != null)
+                    scene.Draw(spriteBatch);
             }
         }
 

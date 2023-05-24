@@ -17,14 +17,14 @@ namespace _SideScrollingGame.Content
             return tmpTexture2D;
         }
 
-        public (Texture2D, Rectangle[]) LoadSprite(string root, string path, int amount)
+        public (Texture2D, Rectangle[]) LoadSprite(string root, string path, int amount, int step)
         {
             Texture2D tmpTexture2D = contentManager.Load<Texture2D>(root+"/"+path);
             int widthStep = tmpTexture2D.Width / amount;
             Rectangle[] spriteRectangles = new Rectangle[amount];
             for (int i = 0; i < amount; i++)
             {
-                spriteRectangles[i] = new Rectangle(widthStep * i, 0, widthStep, tmpTexture2D.Height);
+                spriteRectangles[i] = new Rectangle(widthStep * i, 0, step, tmpTexture2D.Height);
             }
             return (tmpTexture2D, spriteRectangles);
         }
