@@ -21,6 +21,7 @@ namespace _SideScrollingGame.Scenes
         public void LoadContent()
         {
             SceneManager.Instance.AddScene(SceneManager.SceneName.TilemapScene, 2);
+            SceneManager.Instance.AddScene(SceneManager.SceneName.UIScene, 3);
         }
 
         public void UnloadContent()
@@ -29,7 +30,7 @@ namespace _SideScrollingGame.Scenes
 
         public void Update(GameTime gameTime)
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.F) && !_isClicked)
+            if (Keyboard.GetState().IsKeyDown(Keys.T) && !_isClicked)
             {
                 SceneManager.Instance.AddScene(SceneManager.SceneName.BackgroundScene, 0);
                 _isClicked = true;

@@ -17,6 +17,7 @@ namespace _SideScrollingGame.Manager
             IntroScene,
             BackgroundScene,
             TilemapScene,
+            UIScene,
         }
 
         // ? Function
@@ -43,6 +44,9 @@ namespace _SideScrollingGame.Manager
                     break;
                 case SceneName.TilemapScene:
                     _listGameScene[layerLevel,_indexList[layerLevel]] = new TilemapScene();
+                    break;
+                case SceneName.UIScene:
+                    _listGameScene[layerLevel,_indexList[layerLevel]] = new UIScene();
                     break;
             }
             _indexList[layerLevel]++;

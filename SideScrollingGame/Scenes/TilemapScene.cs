@@ -46,6 +46,18 @@ namespace _SideScrollingGame.Scenes
         {
             Vector2 initPos = Player.Instance.PrevPosition;
 
+            // ? Check X axis
+            foreach (Rectangle rect in _collisionRects)
+            {
+                if (rect.Intersects(Player.Instance.Hitbox) && !rect.Intersects(Player.Instance.FallingRect))
+                {
+                    Console.Write("HIT");
+                    Player.Instance.Position.X = initPos.X;
+                    Player.Instance.Velocity.X = initPos.X;
+                    break;
+                }
+            }
+
             // ? Check Y axis
             foreach (Rectangle rect in _collisionRects)
             {
@@ -53,17 +65,8 @@ namespace _SideScrollingGame.Scenes
                 if (rect.Intersects(Player.Instance.FallingRect))
                 {
                     Player.Instance._isPlayerFalling = false;
-                    break;
-                }
-            }
-
-            // ? Check X axis
-            foreach (Rectangle rect in _collisionRects)
-            {
-                if (rect.Intersects(Player.Instance.Hitbox))
-                {
-                    Player.Instance.Position.X = initPos.X;
-                    Player.Instance.Velocity.X = initPos.X;
+                    Player.Instance.Position.Y = rect.Y - Player.Instance.Hitbox.Height;
+                    Player.Instance.Velocity.Y = rect.Y - Player.Instance.Hitbox.Height;
                     break;
                 }
             }

@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 using _SideScrollingGame.Content;
+using System;
 
 namespace _SideScrollingGame.Objects
 {
@@ -17,11 +18,16 @@ namespace _SideScrollingGame.Objects
         public Rectangle Hitbox;
         public Rectangle FallingRect;
 
-        private float _playerMovementSpeed = 4;
-        private float _playerFallingSpeed = 4;
+        private float _playerMovementSpeed = 3;
+
+        private float _playerFallingSpeed = 3;
         public bool _isPlayerFalling = false;
+
         private bool _playerDirection = true;
         private bool _isPlayerAnimationDone = true;
+
+        private float _attackDelay = 440f;
+        private float _currentTime = 0;
 
         // ? Animation
         private enum PlayerAnimationName
@@ -29,6 +35,7 @@ namespace _SideScrollingGame.Objects
             Idle,
             Run,
             Attack1,
+            Attack2,
             Jump
         }
         private PlayerAnimationName _currentPlayerAnimation;
@@ -36,7 +43,8 @@ namespace _SideScrollingGame.Objects
         private Animation _idleAnimation;
         private Animation _runAnimation;
         private Animation _runAttackAnimation;
-        private Animation _attackAnimation;
+        private Animation _attack1Animation;
+        private Animation _attack2Animation;
 
         // ? Timer
         private float Timer = 0;
@@ -53,9 +61,10 @@ namespace _SideScrollingGame.Objects
             FallingRect = new Rectangle((int)Position.X, (int)Position.Y+48, 24, 1);
 
             // ? Animation
-            _idleAnimation = new Animation(ContentManagers.Instance.LoadSprite(_rootFolderName, "Punk_idle", 4, 34), Position);
-            _runAnimation = new Animation(ContentManagers.Instance.LoadSprite(_rootFolderName, "Punk_run", 6, 34), Position, 100);
-            _attackAnimation = new Animation(ContentManagers.Instance.LoadSprite(_rootFolderName, "Punk_attack1", 6, 34), Position, 30);
+            _idleAnimation = new Animation(ContentManagers.Instance.LoadSprite(_rootFolderName, "Punk_idle", 4, 34), Position, 200);
+            _runAnimation = new Animation(ContentManagers.Instance.LoadSprite(_rootFolderName, "Punk_run", 6, 34), Position, 110);
+            _attack1Animation = new Animation(ContentManagers.Instance.LoadSprite(_rootFolderName, "Punk_attack1", 6, 34), Position, 60);
+            _attack2Animation = new Animation(ContentManagers.Instance.LoadSprite(_rootFolderName, "Punk_attack2", 6, 34), Position, 60);
         }
 
         public void LoadContent(ContentManager Content)
@@ -72,12 +81,16 @@ namespace _SideScrollingGame.Objects
 
             _currentPlayerAnimation = PlayerAnimationName.Idle;
 
+            _currentTime += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+
             if (_isPlayerFalling)
                 Velocity.Y += _playerFallingSpeed;
 
-            if (keyboard.IsKeyDown(Keys.Z))
+            if (_currentTime > _attackDelay && keyboard.IsKeyDown(Keys.Z)) // ! Add some delay
             {
-                _currentPlayerAnimation = PlayerAnimationName.Attack1;
+                _currentTime = 0;
+                Random rnd = new Random();
+                _currentPlayerAnimation = (rnd.Next(2) == 0) ? PlayerAnimationName.Attack1 : PlayerAnimationName.Attack2;
                 _playingPlayerAnimation = _currentPlayerAnimation;
                 _isPlayerAnimationDone = false;
             }
@@ -110,8 +123,12 @@ namespace _SideScrollingGame.Objects
                     _runAnimation.Update(gameTime);
                     break;
                 case PlayerAnimationName.Attack1:
-                    _attackAnimation.Update(gameTime);
-                    _isPlayerAnimationDone = _attackAnimation.IsDone();
+                    _attack1Animation.Update(gameTime);
+                    _isPlayerAnimationDone = _attack1Animation.IsDone();
+                    break;
+                case PlayerAnimationName.Attack2:
+                    _attack2Animation.Update(gameTime);
+                    _isPlayerAnimationDone = _attack2Animation.IsDone();
                     break;
             }
         }
@@ -127,7 +144,10 @@ namespace _SideScrollingGame.Objects
                     _runAnimation.Draw(spriteBatch, Position, _playerDirection);
                     break;
                 case PlayerAnimationName.Attack1:
-                    _attackAnimation.Draw(spriteBatch, Position, _playerDirection);
+                    _attack1Animation.Draw(spriteBatch, Position, _playerDirection);
+                    break;
+                case PlayerAnimationName.Attack2:
+                    _attack2Animation.Draw(spriteBatch, Position, _playerDirection);
                     break;
             }
         }
