@@ -13,6 +13,18 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin BackgroundScene/Background.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:BackgroundScene/Background.png
+
 #begin IntroScene/IntroBackground.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -24,6 +36,9 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:IntroScene/IntroBackground.png
+
+#begin Map.tmx
+/copy:Map.tmx
 
 #begin PlayerSprite/Punk_attack1.png
 /importer:TextureImporter
@@ -96,4 +111,19 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:TestScene/Punk_attack1.png
+
+#begin TilemapScene/Tileset.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:TilemapScene/Tileset.png
+
+#begin Tileset.tsx
+/copy:Tileset.tsx
 
