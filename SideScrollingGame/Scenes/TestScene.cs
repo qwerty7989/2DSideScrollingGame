@@ -10,14 +10,17 @@ namespace _SideScrollingGame.Scenes
 {
     public class TestScene : GameScene
     {
-        private Texture2D _sceneBackground;
-        private Player _player;
+        private bool _isClicked = false;
 
         private string _rootFolderName = "TestScene";
+        public TestScene()
+        {
+
+        }
+
         public void LoadContent()
         {
-            _sceneBackground = ContentManagers.Instance.LoadTexture(_rootFolderName, "PlaySceneGameBackground");
-            _player = new Player();
+            SceneManager.Instance.AddScene(SceneManager.SceneName.TilemapScene, 2);
         }
 
         public void UnloadContent()
@@ -26,15 +29,17 @@ namespace _SideScrollingGame.Scenes
 
         public void Update(GameTime gameTime)
         {
-            //if (Keyboard.GetState().IsKeyDown(Keys.G))
-            //    SceneManager.Instance.ChangeScene(SceneManager.SceneName.IntroScene);
-            _player.Update(gameTime);
+            if (Keyboard.GetState().IsKeyDown(Keys.F) && !_isClicked)
+            {
+                SceneManager.Instance.AddScene(SceneManager.SceneName.BackgroundScene, 0);
+                _isClicked = true;
+            }
+            Player.Instance.Update(gameTime);
         }
 
         public void Draw(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Draw(_sceneBackground, new Vector2(0, 0), Color.White);
-            _player.Draw(spriteBatch);
+        {;
+            Player.Instance.Draw(spriteBatch);
         }
     }
 }

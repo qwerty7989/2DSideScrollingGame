@@ -14,7 +14,9 @@ namespace _SideScrollingGame.Manager
         public enum SceneName
         {
             TestScene,
-            IntroScene
+            IntroScene,
+            BackgroundScene,
+            TilemapScene,
         }
 
         // ? Function
@@ -22,11 +24,12 @@ namespace _SideScrollingGame.Manager
         {
             _listGameScene = new GameScene[7,50];
             _indexList = new int[50];
-            AddScene(SceneName.IntroScene, 0);
+            ChangeScene(SceneName.IntroScene, 1);
         }
 
         public void AddScene(SceneName sceneName, int layerLevel)
         {
+            System.Console.WriteLine("L: " + layerLevel + " IL: " + _indexList[layerLevel]);
             switch (sceneName)
             {
                 case SceneName.TestScene:
@@ -35,17 +38,22 @@ namespace _SideScrollingGame.Manager
                 case SceneName.IntroScene:
                     _listGameScene[layerLevel,_indexList[layerLevel]] = new IntroScene();
                     break;
+                case SceneName.BackgroundScene:
+                    _listGameScene[layerLevel,_indexList[layerLevel]] = new BackgroundScene();
+                    break;
+                case SceneName.TilemapScene:
+                    _listGameScene[layerLevel,_indexList[layerLevel]] = new TilemapScene();
+                    break;
             }
             _indexList[layerLevel]++;
-            LoadContent();
+            LoadContent(layerLevel, _indexList[layerLevel] - 1);
         }
 
-        public void ChangeScene(SceneName sceneName)
+        public void ChangeScene(SceneName sceneName, int layerLevel)
         {
             _listGameScene = new GameScene[7,50];
             _indexList = new int[50];
-            AddScene(sceneName, 0);
-            LoadContent();
+            AddScene(sceneName, layerLevel);
         }
 
         // ? Default function
@@ -57,6 +65,12 @@ namespace _SideScrollingGame.Manager
                 if (scene != null)
                     scene.LoadContent();
             }
+        }
+
+        // ? Default function
+        public void LoadContent(int layerLevel, int index)
+        {
+            _listGameScene[layerLevel, index].LoadContent();
         }
 
         public void UnloadContent()

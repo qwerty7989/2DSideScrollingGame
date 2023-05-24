@@ -36,7 +36,7 @@ public class Main : Game
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-        SceneManager.Instance.LoadContent();
+        //SceneManager.Instance.LoadContent();
 
     }
 

@@ -10,15 +10,16 @@ namespace _SideScrollingGame.Objects
     public class Player : GameObject
     {
         private Texture2D Texture;
-        private Vector2 Position;
-        private Vector2 Velocity;
+        public Vector2 Position;
+        public Vector2 Velocity;
+        public Vector2 PrevPosition;
 
         public Rectangle Hitbox;
         public Rectangle FallingRect;
 
         private float _playerMovementSpeed = 4;
         private float _playerFallingSpeed = 4;
-        private bool _isPlayerFalling = false;
+        public bool _isPlayerFalling = false;
         private bool _playerDirection = true;
         private bool _isPlayerAnimationDone = true;
 
@@ -28,7 +29,7 @@ namespace _SideScrollingGame.Objects
             Idle,
             Run,
             Attack1,
-            Attack2
+            Jump
         }
         private PlayerAnimationName _currentPlayerAnimation;
         private PlayerAnimationName _playingPlayerAnimation;
@@ -46,14 +47,15 @@ namespace _SideScrollingGame.Objects
         {
             Position = new Vector2();
             Velocity = new Vector2();
+            PrevPosition = Position;
 
             Hitbox = new Rectangle((int)Position.X, (int)Position.Y, 26, 48);
-            FallingRect = new Rectangle((int)Position.X, (int)Position.Y+48, 26, 1);
+            FallingRect = new Rectangle((int)Position.X, (int)Position.Y+48, 24, 1);
 
             // ? Animation
-            _idleAnimation = new Animation(ContentManagers.Instance.LoadSprite(_rootFolderName, "Punk_idle", 4, 48), Position);
-            _runAnimation = new Animation(ContentManagers.Instance.LoadSprite(_rootFolderName, "Punk_run", 6, 48), Position, 100);
-            _attackAnimation = new Animation(ContentManagers.Instance.LoadSprite(_rootFolderName, "Punk_attack1", 6, 48), Position, 30);
+            _idleAnimation = new Animation(ContentManagers.Instance.LoadSprite(_rootFolderName, "Punk_idle", 4, 34), Position);
+            _runAnimation = new Animation(ContentManagers.Instance.LoadSprite(_rootFolderName, "Punk_run", 6, 34), Position, 100);
+            _attackAnimation = new Animation(ContentManagers.Instance.LoadSprite(_rootFolderName, "Punk_attack1", 6, 34), Position, 30);
         }
 
         public void LoadContent(ContentManager Content)
@@ -87,6 +89,7 @@ namespace _SideScrollingGame.Objects
             }
 
             // ? Movement
+            PrevPosition = Position;
             Position = Velocity;
             Hitbox.X = (int)Position.X;
             Hitbox.Y = (int)Position.Y;
@@ -126,6 +129,20 @@ namespace _SideScrollingGame.Objects
                 case PlayerAnimationName.Attack1:
                     _attackAnimation.Draw(spriteBatch, Position, _playerDirection);
                     break;
+            }
+        }
+
+        // ? Singleton
+        private static Player instance;
+        public static Player Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new Player();
+                }
+                return instance;
             }
         }
     }

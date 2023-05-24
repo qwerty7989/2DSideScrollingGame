@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace _SideScrollingGame.Objects
 {
-    public class Animation
+    public class Animation : GameObject
     {
         private Texture2D Texture;
         private Rectangle[] Rectangles;
@@ -44,15 +44,6 @@ namespace _SideScrollingGame.Objects
             return false;
         }
 
-        public bool IsDone(int index)
-        {
-            if (Index > index)
-            {
-                return true;
-            }
-            return false;
-        }
-
         public void Update(GameTime gameTime)
         {
             if (Timer > Threshold)
@@ -71,6 +62,11 @@ namespace _SideScrollingGame.Objects
             {
                 Timer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             }
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(Texture, Position, Rectangles[Index], Color.White);
         }
 
         public void Draw(SpriteBatch spriteBatch, Vector2 Position, bool _playerDirection)

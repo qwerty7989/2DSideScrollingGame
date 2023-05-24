@@ -23,10 +23,8 @@ namespace _SideScrollingGame.Scenes
 
         public void Update(GameTime gameTime)
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.F))
-                SceneManager.Instance.AddScene(SceneManager.SceneName.TestScene, 0);
             if (Keyboard.GetState().IsKeyDown(Keys.G))
-                SceneManager.Instance.ChangeScene(SceneManager.SceneName.TestScene);
+                SceneManager.Instance.ChangeScene(SceneManager.SceneName.TestScene, 1);
         }
 
         public void Draw(SpriteBatch spriteBatch)
