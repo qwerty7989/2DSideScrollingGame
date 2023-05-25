@@ -35,6 +35,13 @@ namespace _SideScrollingGame.Scenes
                 {
                     _collisionRects.Add(new Rectangle((int)tile.X, (int)tile.Y, (int)tile.Width, (int)tile.Height));
                 }
+                if (tile.Name == "start")
+                {
+                    Player.Instance.Position.X = (float)tile.X;
+                    Player.Instance.Position.Y = (float)tile.Y;
+                    Player.Instance.Velocity.X = (float)tile.X;
+                    Player.Instance.Velocity.Y = (float)tile.Y;
+                }
             }
         }
 
@@ -51,7 +58,6 @@ namespace _SideScrollingGame.Scenes
             {
                 if (rect.Intersects(Player.Instance.Hitbox) && !rect.Intersects(Player.Instance.FallingRect))
                 {
-                    Console.Write("HIT");
                     Player.Instance.Position.X = initPos.X;
                     Player.Instance.Velocity.X = initPos.X;
                     break;

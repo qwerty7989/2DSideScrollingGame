@@ -31,7 +31,6 @@ namespace _SideScrollingGame.Scenes
 
             if (_currentTime > _openDelay && Keyboard.GetState().IsKeyDown(Keys.F))
             {
-                System.Console.Write("FLIP");
                 _currentTime = 0;
                 _isOpened = !_isOpened;
             }

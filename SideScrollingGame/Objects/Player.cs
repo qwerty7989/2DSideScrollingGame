@@ -86,7 +86,7 @@ namespace _SideScrollingGame.Objects
             if (_isPlayerFalling)
                 Velocity.Y += _playerFallingSpeed;
 
-            if (_currentTime > _attackDelay && keyboard.IsKeyDown(Keys.Z)) // ! Add some delay
+            if (_currentTime > _attackDelay && keyboard.IsKeyDown(Keys.Z))
             {
                 _currentTime = 0;
                 Random rnd = new Random();
@@ -99,6 +99,11 @@ namespace _SideScrollingGame.Objects
                 Velocity.X += (keyboard.IsKeyDown(Keys.A)) ? -_playerMovementSpeed : _playerMovementSpeed;
                 _playerDirection = (keyboard.IsKeyDown(Keys.A)) ? false : true;
                 _currentPlayerAnimation = PlayerAnimationName.Run;
+            }
+
+            if (keyboard.IsKeyDown(Keys.Space))
+            {
+                Velocity.Y -= 5;
             }
 
             // ? Movement
