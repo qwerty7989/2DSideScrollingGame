@@ -5,6 +5,8 @@ using Microsoft.Xna.Framework.Content;
 
 using _SideScrollingGame.Content;
 using _SideScrollingGame.Manager;
+using _SideScrollingGame.Objects;
+using _SideScrollingGame.Scenes;
 
 namespace _SideScrollingGame;
 
@@ -12,6 +14,14 @@ public class Main : Game
 {
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
+
+    public static float screenWidth;
+    public static float screenHeight;
+
+    public static bool _playerStart = false;
+
+    private Camera Camera;
+    private Matrix TransformMatrix;
 
     public Main()
     {
@@ -24,10 +34,15 @@ public class Main : Game
 
     protected override void Initialize()
     {
-        _graphics.PreferredBackBufferWidth = 1600;
-        _graphics.PreferredBackBufferHeight = 900;
-        _graphics.IsFullScreen = false;
+        _graphics.PreferredBackBufferWidth = 1920;
+        _graphics.PreferredBackBufferHeight = 1080;
+        _graphics.IsFullScreen = true;
         _graphics.ApplyChanges();
+
+        screenWidth = _graphics.PreferredBackBufferWidth;
+        screenHeight = _graphics.PreferredBackBufferHeight;
+
+        Camera = new Camera();
 
         base.Initialize();
     }
@@ -46,6 +61,7 @@ public class Main : Game
             Exit();
 
         SceneManager.Instance.Update(gameTime);
+        TransformMatrix = Camera.Follow(Player.Instance.Hitbox);
 
         base.Update(gameTime);
     }
@@ -53,7 +69,10 @@ public class Main : Game
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(Color.Black);
-        _spriteBatch.Begin();
+        if (_playerStart)
+            _spriteBatch.Begin(transformMatrix: TransformMatrix);
+        else
+            _spriteBatch.Begin();
 
         SceneManager.Instance.Draw(_spriteBatch);
 

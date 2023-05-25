@@ -10,12 +10,13 @@ namespace _SideScrollingGame.Scenes
 {
     public class TestScene : GameScene
     {
+
         private bool _isClicked = false;
 
         private string _rootFolderName = "TestScene";
         public TestScene()
         {
-
+            Main._playerStart = true;
         }
 
         public void LoadContent()
@@ -39,7 +40,7 @@ namespace _SideScrollingGame.Scenes
         }
 
         public void Draw(SpriteBatch spriteBatch)
-        {;
+        {
             Player.Instance.Draw(spriteBatch);
         }
     }
