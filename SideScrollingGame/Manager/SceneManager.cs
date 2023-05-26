@@ -30,7 +30,6 @@ namespace _SideScrollingGame.Manager
 
         public void AddScene(SceneName sceneName, int layerLevel)
         {
-            System.Console.WriteLine("L: " + layerLevel + " IL: " + _indexList[layerLevel]);
             switch (sceneName)
             {
                 case SceneName.TestScene:

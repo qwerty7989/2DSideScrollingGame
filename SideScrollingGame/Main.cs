@@ -19,6 +19,7 @@ public class Main : Game
     public static float screenHeight;
 
     public static bool _playerStart = false;
+    public static bool _isPlayerExit = false;
 
     private Camera Camera;
     private Matrix TransformMatrix;
@@ -57,7 +58,7 @@ public class Main : Game
 
     protected override void Update(GameTime gameTime)
     {
-        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape) || _isPlayerExit)
             Exit();
 
         SceneManager.Instance.Update(gameTime);
