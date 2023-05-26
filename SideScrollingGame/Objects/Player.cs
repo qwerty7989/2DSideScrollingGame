@@ -40,15 +40,23 @@ namespace _SideScrollingGame.Objects
             Run,
             Attack1,
             Attack2,
-            Jump
+            Jump,
+            GunIdle,
+            GunRun
         }
         private PlayerAnimationName _currentPlayerAnimation;
         private PlayerAnimationName _playingPlayerAnimation;
         private Animation _idleAnimation;
         private Animation _runAnimation;
-        private Animation _runAttackAnimation;
         private Animation _attack1Animation;
         private Animation _attack2Animation;
+
+        // ? Guns, guns, guns
+        private bool _unlockedGuns = true;
+        private Animation _idleGunAnimation;
+        private Animation _runGunAnimation;
+        private Texture2D _gunIdle;
+        private Texture2D _gunRun;
 
         // ? Timer
         private float Timer = 0;
@@ -69,6 +77,12 @@ namespace _SideScrollingGame.Objects
             _runAnimation = new Animation(ContentManagers.Instance.LoadSprite(_rootFolderName, "Punk_run", 6, 34), Position, 110);
             _attack1Animation = new Animation(ContentManagers.Instance.LoadSprite(_rootFolderName, "Punk_attack1", 6, 34), Position, 60);
             _attack2Animation = new Animation(ContentManagers.Instance.LoadSprite(_rootFolderName, "Punk_attack2", 6, 34), Position, 60);
+
+            // ? Gun
+            _idleGunAnimation = new Animation(ContentManagers.Instance.LoadSprite(_rootFolderName, "Punk_idle_gun", 4, 34), Position, 200);
+            _runGunAnimation = new Animation(ContentManagers.Instance.LoadSprite(_rootFolderName, "Punk_run_gun", 6, 34), Position, 110);
+            _gunIdle = ContentManagers.Instance.LoadTexture(_rootFolderName, "Punk_gun_idle");
+            _gunRun = ContentManagers.Instance.LoadTexture(_rootFolderName, "Punk_gun_run");
         }
 
         public void LoadContent(ContentManager Content)
@@ -83,7 +97,14 @@ namespace _SideScrollingGame.Objects
         {
             KeyboardState keyboard = Keyboard.GetState();
 
-            _currentPlayerAnimation = PlayerAnimationName.Idle;
+            if (_unlockedGuns)
+            {
+                _currentPlayerAnimation = PlayerAnimationName.GunIdle;
+            }
+            else
+            {
+                _currentPlayerAnimation = PlayerAnimationName.Idle;
+            }
 
             _currentTime += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 
@@ -94,7 +115,14 @@ namespace _SideScrollingGame.Objects
             {
                 _currentTime = 0;
                 Random rnd = new Random();
-                _currentPlayerAnimation = (rnd.Next(2) == 0) ? PlayerAnimationName.Attack1 : PlayerAnimationName.Attack2;
+                if (_unlockedGuns)
+                {
+                    _currentPlayerAnimation = PlayerAnimationName.Idle;
+                }
+                else
+                {
+                    _currentPlayerAnimation = (rnd.Next(2) == 0) ? PlayerAnimationName.Attack1 : PlayerAnimationName.Attack2;
+                }
                 _playingPlayerAnimation = _currentPlayerAnimation;
                 _isPlayerAnimationDone = false;
             }
@@ -102,7 +130,14 @@ namespace _SideScrollingGame.Objects
             {
                 Velocity.X += (keyboard.IsKeyDown(Keys.A)) ? -_playerMovementSpeed : _playerMovementSpeed;
                 _playerDirection = (keyboard.IsKeyDown(Keys.A)) ? false : true;
-                _currentPlayerAnimation = PlayerAnimationName.Run;
+                if (_unlockedGuns)
+                {
+                    _currentPlayerAnimation = PlayerAnimationName.GunRun;
+                }
+                else
+                {
+                    _currentPlayerAnimation = PlayerAnimationName.Run;
+                }
             }
 
             if (!_playerJumping && !_isPlayerFalling && keyboard.IsKeyDown(Keys.Space))
@@ -150,6 +185,12 @@ namespace _SideScrollingGame.Objects
                     _attack2Animation.Update(gameTime);
                     _isPlayerAnimationDone = _attack2Animation.IsDone();
                     break;
+                case PlayerAnimationName.GunIdle:
+                    _idleGunAnimation.Update(gameTime);
+                    break;
+                case PlayerAnimationName.GunRun:
+                    _runGunAnimation.Update(gameTime);
+                    break;
             }
         }
 
@@ -169,6 +210,41 @@ namespace _SideScrollingGame.Objects
                 case PlayerAnimationName.Attack2:
                     _attack2Animation.Draw(spriteBatch, Position, _playerDirection);
                     break;
+                case PlayerAnimationName.GunIdle:
+                    _idleGunAnimation.Draw(spriteBatch, Position, _playerDirection);
+                    break;
+                case PlayerAnimationName.GunRun:
+                    _runGunAnimation.Draw(spriteBatch, Position, _playerDirection);
+                    break;
+            }
+
+            if (_unlockedGuns)
+            {
+                if (_playerDirection)
+                {
+                    switch (_currentPlayerAnimation)
+                    {
+                        case PlayerAnimationName.GunRun:
+                            spriteBatch.Draw(_gunRun, new Vector2(Position.X+5, Position.Y+22), Color.White);
+                            break;
+                        case PlayerAnimationName.GunIdle:
+                            spriteBatch.Draw(_gunIdle, new Vector2(Position.X+1, Position.Y+27), Color.White);
+                            break;
+                    }
+                }
+                else
+                {
+                    switch (_currentPlayerAnimation)
+                    {
+                        case PlayerAnimationName.GunRun:
+                            spriteBatch.Draw(_gunRun, new Vector2(Position.X+5, Position.Y+22), null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.FlipHorizontally, 0f);
+                            break;
+                        case PlayerAnimationName.GunIdle:
+                            spriteBatch.Draw(_gunIdle, new Vector2(Position.X+1, Position.Y+27), null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.FlipHorizontally, 0f);
+                            break;
+                    }
+                }
+
             }
         }
 

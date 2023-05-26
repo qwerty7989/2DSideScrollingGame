@@ -25,6 +25,12 @@
 /processorParam:TextureFormat=Color
 /build:BackgroundScene/Background.png
 
+#begin Green.tsx
+/copy:Green.tsx
+
+#begin Indus.tsx
+/copy:Indus.tsx
+
 #begin IntroScene/IntroBackground.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -100,6 +106,42 @@
 /processorParam:TextureFormat=Color
 /build:PlayerSprite/Punk_attack2.png
 
+#begin PlayerSprite/Punk_gun_idle.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:PlayerSprite/Punk_gun_idle.png
+
+#begin PlayerSprite/Punk_gun_run.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:PlayerSprite/Punk_gun_run.png
+
+#begin PlayerSprite/Punk_idle_gun.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:PlayerSprite/Punk_idle_gun.png
+
 #begin PlayerSprite/Punk_idle.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -123,6 +165,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:PlayerSprite/Punk_run_attack.png
+
+#begin PlayerSprite/Punk_run_gun.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:PlayerSprite/Punk_run_gun.png
 
 #begin PlayerSprite/Punk_run.png
 /importer:TextureImporter
