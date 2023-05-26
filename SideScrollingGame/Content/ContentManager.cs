@@ -29,6 +29,18 @@ namespace _SideScrollingGame.Content
             return (tmpTexture2D, spriteRectangles);
         }
 
+        public (Texture2D, Rectangle[]) LoadSprite(string root, string path, int amount)
+        {
+            Texture2D tmpTexture2D = contentManager.Load<Texture2D>(root+"/"+path);
+            int widthStep = tmpTexture2D.Width / amount;
+            Rectangle[] spriteRectangles = new Rectangle[amount];
+            for (int i = 0; i < amount; i++)
+            {
+                spriteRectangles[i] = new Rectangle(widthStep * i, 0, widthStep, tmpTexture2D.Height);
+            }
+            return (tmpTexture2D, spriteRectangles);
+        }
+
         // ? Singleton
         private static ContentManagers instance;
         public static ContentManagers Instance

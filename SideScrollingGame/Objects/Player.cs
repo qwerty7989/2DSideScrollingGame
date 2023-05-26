@@ -18,6 +18,7 @@ namespace _SideScrollingGame.Objects
         public Rectangle Hitbox;
         public Rectangle FallingRect;
 
+        public int _playerHealth = 3;
         private float _playerMovementSpeed = 3;
 
         private float _playerFallingSpeed = 3;
