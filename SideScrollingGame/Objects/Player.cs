@@ -29,6 +29,9 @@ namespace _SideScrollingGame.Objects
         private float _attackDelay = 440f;
         private float _currentTime = 0;
 
+        // ? Jumping
+        private bool _playerJumping = false;
+
         // ? Animation
         private enum PlayerAnimationName
         {
@@ -101,9 +104,20 @@ namespace _SideScrollingGame.Objects
                 _currentPlayerAnimation = PlayerAnimationName.Run;
             }
 
-            if (keyboard.IsKeyDown(Keys.Space))
+            if (!_playerJumping && !_isPlayerFalling && keyboard.IsKeyDown(Keys.Space))
             {
-                Velocity.Y -= 5;
+                _currentTime = 0;
+                _playerJumping = true;
+            }
+
+            if (_playerJumping)
+            {
+                Velocity.Y -= 20;
+                if (_currentTime > 100f)
+                {
+                    _currentTime = 0;
+                    _playerJumping = false;
+                }
             }
 
             // ? Movement
