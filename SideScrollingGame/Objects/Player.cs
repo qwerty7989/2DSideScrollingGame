@@ -11,7 +11,8 @@ namespace _SideScrollingGame.Objects
     {
         private Texture2D Texture;
         public Vector2 Position;
-        private Vector2 Velocity;
+        public Vector2 PrevPosition;
+        public Vector2 Velocity;
 
         private Texture2D HitboxTexture;
         public Rectangle Hitbox;
@@ -32,6 +33,7 @@ namespace _SideScrollingGame.Objects
         {
             // ? 70, 134
             Position = new Vector2(1000, 897-134);
+            PrevPosition = Position;
             Velocity = new Vector2();
 
             // ? Animation
@@ -49,6 +51,7 @@ namespace _SideScrollingGame.Objects
 
         public void Update(GameTime gameTime)
         {
+            PrevPosition = Position;
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             KeyboardState keyboard = Keyboard.GetState();
@@ -101,6 +104,8 @@ namespace _SideScrollingGame.Objects
             {
                 Velocity.X = MathHelper.Clamp(Velocity.X, -10, 0);
             }
+
+            Velocity.Y = MathHelper.Clamp(Velocity.Y, -_playerJumpSpeed, _playerFallingSpeed);
             Position += Velocity;
             Hitbox.X = (int)Position.X;
             Hitbox.Y = (int)Position.Y;

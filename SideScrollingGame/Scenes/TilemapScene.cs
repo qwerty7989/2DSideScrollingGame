@@ -22,7 +22,7 @@ namespace _SideScrollingGame.Scenes
         private string _rootFolderName = "PlayScene";
         public void LoadContent()
         {
-            _map = new TmxMap("Content/PlayMap.tmx");
+            _map = new TmxMap("Content/PlayScene/PlayMap.tmx");
             _tileset = ContentManagers.Instance.LoadTexture(_rootFolderName, _map.Tilesets[0].Name.ToString());
             _tileWidth = _map.Tilesets[0].TileWidth;
             _tileHeight = _map.Tilesets[0].TileHeight;
@@ -49,16 +49,17 @@ namespace _SideScrollingGame.Scenes
 
         public void Update(GameTime gameTime)
         {
+            Vector2 initPos = Player.Instance.PrevPosition;
+
             // ? Check X axis
-            //foreach (Rectangle rect in _collisionRects)
-            //{
-            //    if (rect.Intersects(Player.Instance.Hitbox) && !rect.Intersects(Player.Instance.FallingRect))
-            //    {
-            //        Player.Instance.Position.X = initPos.X;
-            //        Player.Instance.Velocity.X = initPos.X;
-            //        break;
-            //    }
-            //}
+            foreach (Rectangle rect in _collisionRects)
+            {
+                if (rect.Intersects(Player.Instance.Hitbox))
+                {
+                    // ? Write your collision X here.
+                    break;
+                }
+            }
 
             // ? Check Y axis
             foreach (Rectangle rect in _collisionRects)
@@ -66,8 +67,8 @@ namespace _SideScrollingGame.Scenes
                 Player.Instance._isPlayerFalling = true;
                 if (rect.Intersects(Player.Instance.Hitbox))
                 {
+                    // ? Write your collision Y here.
                     Player.Instance._isPlayerFalling = false;
-                    Player.Instance.Position.Y = rect.Y - Player.Instance.Hitbox.Height;
                     break;
                 }
             }

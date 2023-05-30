@@ -16,6 +16,7 @@ namespace _SideScrollingGame.Manager
             IntroScene,
             CreditScene,
             PlayScene,
+            TilemapScene,
             UIScene
         }
 
@@ -39,6 +40,9 @@ namespace _SideScrollingGame.Manager
                     break;
                 case SceneName.PlayScene:
                     _listGameScene[layerLevel,_indexList[layerLevel]] = new PlayScene();
+                    break;
+                case SceneName.TilemapScene:
+                    _listGameScene[layerLevel,_indexList[layerLevel]] = new TilemapScene();
                     break;
             }
             _indexList[layerLevel]++;

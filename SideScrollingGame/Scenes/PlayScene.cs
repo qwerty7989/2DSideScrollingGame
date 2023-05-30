@@ -17,6 +17,7 @@ namespace _SideScrollingGame.Scenes
         public PlayScene()
         {
             Singleton.Instance.isGameStart = true;
+            SceneManager.Instance.AddScene(SceneManager.SceneName.TilemapScene, 2);
         }
 
         public void LoadContent()

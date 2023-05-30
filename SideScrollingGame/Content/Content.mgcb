@@ -89,9 +89,7 @@
 /copy:PlayScene/basic_tile.tsx
 
 #begin PlayScene/PlayMap.tmx
-/importer:XmlImporter
-/processor:
-/build:PlayScene/PlayMap.tmx
+/copy:PlayScene/PlayMap.tmx
 
 #begin PlayScene/tile.jpg
 /importer:TextureImporter
