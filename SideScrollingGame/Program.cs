@@ -1,3 +1,3 @@
 ﻿
-using var game = new _SideScrollingGame.Main();
+using var game = new _SideScrollingGame.Amnesia();
 game.Run();

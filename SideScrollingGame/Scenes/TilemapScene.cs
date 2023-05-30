@@ -19,10 +19,10 @@ namespace _SideScrollingGame.Scenes
 
         private List<Rectangle> _collisionRects;
 
-        private string _rootFolderName = "TilemapScene";
+        private string _rootFolderName = "PlayScene";
         public void LoadContent()
         {
-            _map = new TmxMap("Content/Map.tmx");
+            _map = new TmxMap("Content/PlayMap.tmx");
             _tileset = ContentManagers.Instance.LoadTexture(_rootFolderName, _map.Tilesets[0].Name.ToString());
             _tileWidth = _map.Tilesets[0].TileWidth;
             _tileHeight = _map.Tilesets[0].TileHeight;
@@ -35,6 +35,11 @@ namespace _SideScrollingGame.Scenes
                 {
                     _collisionRects.Add(new Rectangle((int)tile.X, (int)tile.Y, (int)tile.Width, (int)tile.Height));
                 }
+                if (tile.Name == "start")
+                {
+                    Player.Instance.Position.X = (float)tile.X;
+                    Player.Instance.Position.Y = (float)tile.Y;
+                }
             }
         }
 
@@ -44,26 +49,25 @@ namespace _SideScrollingGame.Scenes
 
         public void Update(GameTime gameTime)
         {
-            Vector2 initPos = Player.Instance.PrevPosition;
+            // ? Check X axis
+            //foreach (Rectangle rect in _collisionRects)
+            //{
+            //    if (rect.Intersects(Player.Instance.Hitbox) && !rect.Intersects(Player.Instance.FallingRect))
+            //    {
+            //        Player.Instance.Position.X = initPos.X;
+            //        Player.Instance.Velocity.X = initPos.X;
+            //        break;
+            //    }
+            //}
 
             // ? Check Y axis
             foreach (Rectangle rect in _collisionRects)
             {
                 Player.Instance._isPlayerFalling = true;
-                if (rect.Intersects(Player.Instance.FallingRect))
-                {
-                    Player.Instance._isPlayerFalling = false;
-                    break;
-                }
-            }
-
-            // ? Check X axis
-            foreach (Rectangle rect in _collisionRects)
-            {
                 if (rect.Intersects(Player.Instance.Hitbox))
                 {
-                    Player.Instance.Position.X = initPos.X;
-                    Player.Instance.Velocity.X = initPos.X;
+                    Player.Instance._isPlayerFalling = false;
+                    Player.Instance.Position.Y = rect.Y - Player.Instance.Hitbox.Height;
                     break;
                 }
             }

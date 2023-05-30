@@ -13,8 +13,10 @@ namespace _SideScrollingGame.Manager
         private int[] _indexList;
         public enum SceneName
         {
-            TestScene,
-            IntroScene
+            IntroScene,
+            CreditScene,
+            PlayScene,
+            UIScene
         }
 
         // ? Function
@@ -29,29 +31,31 @@ namespace _SideScrollingGame.Manager
         {
             switch (sceneName)
             {
-                case SceneName.TestScene:
-                    _listGameScene[layerLevel,_indexList[layerLevel]] = new TestScene();
-                    break;
                 case SceneName.IntroScene:
                     _listGameScene[layerLevel,_indexList[layerLevel]] = new IntroScene();
+                    break;
+                case SceneName.CreditScene:
+                    _listGameScene[layerLevel,_indexList[layerLevel]] = new CreditScene();
+                    break;
+                case SceneName.PlayScene:
+                    _listGameScene[layerLevel,_indexList[layerLevel]] = new PlayScene();
                     break;
             }
             _indexList[layerLevel]++;
             LoadContent();
         }
 
-        public void ChangeScene(SceneName sceneName)
+        public void ChangeScene(SceneName sceneName, int layerLevel)
         {
             _listGameScene = new GameScene[7,50];
             _indexList = new int[50];
-            AddScene(sceneName, 0);
+            AddScene(sceneName, layerLevel);
             LoadContent();
         }
 
         // ? Default function
         public void LoadContent()
         {
-            //_currentGameScene.LoadContent();
             foreach (GameScene scene in _listGameScene)
             {
                 if (scene != null)
@@ -70,7 +74,6 @@ namespace _SideScrollingGame.Manager
 
         public void Update(GameTime gameTime)
         {
-            //_currentGameScene.Update(gameTime);
             foreach (GameScene scene in _listGameScene)
             {
                 if (scene != null)
@@ -80,7 +83,6 @@ namespace _SideScrollingGame.Manager
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            //_currentGameScene.Draw(_spriteBatch);
             foreach (GameScene scene in _listGameScene)
             {
                 if (scene != null)

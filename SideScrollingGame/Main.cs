@@ -5,29 +5,35 @@ using Microsoft.Xna.Framework.Content;
 
 using _SideScrollingGame.Content;
 using _SideScrollingGame.Manager;
+using _SideScrollingGame.Scenes;
+using _SideScrollingGame.Objects;
 
 namespace _SideScrollingGame;
 
-public class Main : Game
+public class Amnesia : Game
 {
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
 
-    public Main()
+    private Camera Camera;
+    private Matrix TransformMatrix;
+
+    public Amnesia()
     {
         _graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
         ContentManagers.Instance.contentManagerRoot = Content;
         ContentManagers.Instance.contentManager = new ContentManager(Content.ServiceProvider, Content.RootDirectory);
-        IsMouseVisible = true;
     }
 
     protected override void Initialize()
     {
-        _graphics.PreferredBackBufferWidth = 1600;
-        _graphics.PreferredBackBufferHeight = 900;
-        _graphics.IsFullScreen = false;
+        _graphics.PreferredBackBufferWidth = Singleton.Instance.widthScreen;
+        _graphics.PreferredBackBufferHeight = Singleton.Instance.heightScreen;
+        _graphics.IsFullScreen = true;
         _graphics.ApplyChanges();
+
+        Camera = new Camera();
 
         base.Initialize();
     }
@@ -42,18 +48,24 @@ public class Main : Game
 
     protected override void Update(GameTime gameTime)
     {
-        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape) || Singleton.Instance.isGameExit)
+        {
             Exit();
+        }
 
         SceneManager.Instance.Update(gameTime);
+        TransformMatrix = Camera.Follow(Player.Instance.Hitbox);
 
         base.Update(gameTime);
     }
 
     protected override void Draw(GameTime gameTime)
     {
-        GraphicsDevice.Clear(Color.Black);
-        _spriteBatch.Begin();
+        GraphicsDevice.Clear(Color.White);
+        if (Singleton.Instance.isGameStart)
+            _spriteBatch.Begin(transformMatrix: TransformMatrix);
+        else
+            _spriteBatch.Begin();
 
         SceneManager.Instance.Draw(_spriteBatch);
 
