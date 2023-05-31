@@ -21,8 +21,8 @@ namespace _SideScrollingGame.Objects
 
         private float _playerMovementSpeed = 0.2f;
         private float _playerDeacceleration = 0.5f;
-        private float _playerFallingSpeed = 20;
-        private float _playerJumpSpeed = 15;
+        private float _playerFallingSpeed = 32;
+        private float _playerJumpSpeed = 18;
         public bool PlayerDirection = true;
         public bool _isPlayerOnGround = false;
 

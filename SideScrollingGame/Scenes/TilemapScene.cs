@@ -65,6 +65,7 @@ namespace _SideScrollingGame.Scenes
                         {
                             Player.Instance.Position.X = rect.X - Player.Instance.Hitbox.Width;
                             Player.Instance.Velocity.X = 0;
+                            if (Player.Instance._isPlayerOnGround) Player.Instance.Velocity.Y = 0;
                             break;
                         }
                     }
@@ -74,6 +75,7 @@ namespace _SideScrollingGame.Scenes
                         {
                             Player.Instance.Position.X = rect.X + rect.Width + 0.21f;
                             Player.Instance.Velocity.X = 0;
+                            if (Player.Instance._isPlayerOnGround) Player.Instance.Velocity.Y = 0;
                             break;
                         }
                     }
@@ -93,9 +95,9 @@ namespace _SideScrollingGame.Scenes
                 {
                     if (Player.Instance.Velocity.Y < 0)
                     {
-                        if (nextRec.Y < rect.Y + rect.Height && nextRec.Y + nextRec.Width > rect.Y + rect.Height)
+                        if (Player.Instance.Headbox.Y < rect.Y + rect.Width && Player.Instance.Headbox.Y > rect.Y && ((Player.Instance.Headbox.X < rect.X + rect.Width && Player.Instance.Headbox.X > 0) || (Player.Instance.Headbox.X + Player.Instance.Headbox.Width > rect.X && Player.Instance.Headbox.X + Player.Instance.Headbox.Width < rect.X + rect.Width)))
                         {
-                            //Player.Instance.Position.Y = rect.Y + rect.Height;
+                            Player.Instance.Position.Y = rect.Y + rect.Height;
                             Player.Instance.Velocity.Y = 0;
                         }
                         else if (Player.Instance.Footbox.Y >= rect.Y && Player.Instance.Footbox.Y <= rect.Y)
