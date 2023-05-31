@@ -50,27 +50,76 @@ namespace _SideScrollingGame.Scenes
         public void Update(GameTime gameTime)
         {
             Vector2 initPos = Player.Instance.PrevPosition;
+            Vector2 nextPos = Player.Instance.Position + Player.Instance.Velocity;
+
+            Rectangle nextRec = new Rectangle((int)nextPos.X, (int)nextPos.Y, Player.Instance.Hitbox.Width, Player.Instance.Hitbox.Height);
 
             // ? Check X axis
             foreach (Rectangle rect in _collisionRects)
             {
-                if (rect.Intersects(Player.Instance.Hitbox))
+                if (rect.Intersects(nextRec) && !(Player.Instance.Footbox.Y >= rect.Y && Player.Instance.Footbox.Y <= rect.Y+1) && !rect.Intersects(Player.Instance.Headbox))
                 {
-                    // ? Write your collision X here.
-                    break;
+                    if (Player.Instance.Velocity.X > 0)
+                    {
+                        if (nextRec.X + nextRec.Width > rect.X && nextRec.X < rect.X)
+                        {
+                            Player.Instance.Position.X = rect.X - Player.Instance.Hitbox.Width;
+                            Player.Instance.Velocity.X = 0;
+                            break;
+                        }
+                    }
+                    else if (Player.Instance.Velocity.X < 0)
+                    {
+                        if (nextRec.X < rect.X + rect.Width && nextRec.X + nextRec.Width > rect.X + rect.Width)
+                        {
+                            Player.Instance.Position.X = rect.X + rect.Width + 0.21f;
+                            Player.Instance.Velocity.X = 0;
+                            break;
+                        }
+                    }
                 }
             }
 
             // ? Check Y axis
+            bool onGround = false;
             foreach (Rectangle rect in _collisionRects)
             {
-                Player.Instance._isPlayerFalling = true;
-                if (rect.Intersects(Player.Instance.Hitbox))
+                if (rect.Intersects(Player.Instance.Footbox))
                 {
-                    // ? Write your collision Y here.
-                    Player.Instance._isPlayerFalling = false;
-                    break;
+                    onGround = true;
                 }
+
+                if (rect.Intersects(nextRec))
+                {
+                    if (Player.Instance.Velocity.Y < 0)
+                    {
+                        if (nextRec.Y < rect.Y + rect.Height && nextRec.Y + nextRec.Width > rect.Y + rect.Height)
+                        {
+                            //Player.Instance.Position.Y = rect.Y + rect.Height;
+                            Player.Instance.Velocity.Y = 0;
+                        }
+                        else if (Player.Instance.Footbox.Y >= rect.Y && Player.Instance.Footbox.Y <= rect.Y)
+                        {
+                            Player.Instance.Position.Y = rect.Y - Player.Instance.Hitbox.Height;
+                            Player.Instance._isPlayerOnGround = true;
+                            break;
+                        }
+                    }
+                    if (Player.Instance.Velocity.Y > 0)
+                    {
+                        if ((nextRec.X >= rect.X && nextRec.X + nextRec.Width <= rect.X + rect.Width) || rect.Intersects(Player.Instance.Footbox))
+                        {
+                            Player.Instance.Position.Y = rect.Y - Player.Instance.Hitbox.Height;
+                            Player.Instance._isPlayerOnGround = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (!onGround)
+            {
+                Player.Instance._isPlayerOnGround = false;
             }
         }
 

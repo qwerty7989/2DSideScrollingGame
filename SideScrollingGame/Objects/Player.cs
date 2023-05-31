@@ -16,13 +16,15 @@ namespace _SideScrollingGame.Objects
 
         private Texture2D HitboxTexture;
         public Rectangle Hitbox;
+        public Rectangle Footbox;
+        public Rectangle Headbox;
 
         private float _playerMovementSpeed = 0.2f;
         private float _playerDeacceleration = 0.5f;
         private float _playerFallingSpeed = 20;
-        private float _playerJumpSpeed = 6;
-        private bool _playerDirection = true;
-        public bool _isPlayerFalling = true;
+        private float _playerJumpSpeed = 15;
+        public bool PlayerDirection = true;
+        public bool _isPlayerOnGround = false;
 
         // ? Timer
         private float Timer = 0;
@@ -36,9 +38,11 @@ namespace _SideScrollingGame.Objects
             PrevPosition = Position;
             Velocity = new Vector2();
 
-            // ? Animation
+            // ? Hitbox
             HitboxTexture = ContentManagers.Instance.LoadTexture(_rootFolderName, "hitbox");
-            Hitbox = new Rectangle((int)Position.X, (int)Position.Y, 70, 134);
+            Hitbox = new Rectangle((int)Position.X, (int)Position.Y, HitboxTexture.Width, HitboxTexture.Height);
+            Footbox = new Rectangle((int)Position.X, (int)Position.Y+Hitbox.Height, Hitbox.Width, 1);
+            Headbox = new Rectangle((int)Position.X, (int)Position.Y-2, Hitbox.Width, 2);
         }
 
         public void LoadContent(ContentManager Content)
@@ -56,13 +60,13 @@ namespace _SideScrollingGame.Objects
 
             KeyboardState keyboard = Keyboard.GetState();
 
-            if (keyboard.IsKeyDown(Keys.Space))
+            if (keyboard.IsKeyDown(Keys.Space) && _isPlayerOnGround)
             {
                 Velocity.Y = -_playerJumpSpeed;
-                _isPlayerFalling = true;
+                _isPlayerOnGround = false;
             }
 
-            if (_isPlayerFalling)
+            if (!_isPlayerOnGround)
             {
                 Velocity.Y += _playerFallingSpeed * deltaTime;
             }
@@ -72,12 +76,12 @@ namespace _SideScrollingGame.Objects
                 if (keyboard.IsKeyDown(Keys.A))
                 {
                     Velocity.X += -_playerMovementSpeed;
-                    _playerDirection = false;
+                    PlayerDirection = false;
                 }
                 else
                 {
                     Velocity.X += _playerMovementSpeed;
-                    _playerDirection = true;
+                    PlayerDirection = true;
                 }
             }
             else if (Velocity.X != 0)
@@ -96,7 +100,7 @@ namespace _SideScrollingGame.Objects
                 Singleton.Instance.offsetY += 10;
 
             // ? Movement
-            if (_playerDirection)
+            if (PlayerDirection)
             {
                 Velocity.X = MathHelper.Clamp(Velocity.X, 0, 10);
             }
@@ -105,15 +109,27 @@ namespace _SideScrollingGame.Objects
                 Velocity.X = MathHelper.Clamp(Velocity.X, -10, 0);
             }
 
-            Velocity.Y = MathHelper.Clamp(Velocity.Y, -_playerJumpSpeed, _playerFallingSpeed);
+            if (_isPlayerOnGround)
+            {
+                Velocity.Y = MathHelper.Clamp(Velocity.Y, 0, 1f);
+            }
+            else
+            {
+                Velocity.Y = MathHelper.Clamp(Velocity.Y, -_playerJumpSpeed, _playerFallingSpeed);
+            }
+
             Position += Velocity;
             Hitbox.X = (int)Position.X;
             Hitbox.Y = (int)Position.Y;
+            Footbox.X = (int)Position.X;
+            Footbox.Y = (int)Position.Y+Hitbox.Height;
+            Headbox.X = (int)Position.X;
+            Headbox.Y = (int)Position.Y-2;
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (_playerDirection)
+            if (PlayerDirection)
             {
                 spriteBatch.Draw(HitboxTexture, Position, Color.White);
             }
