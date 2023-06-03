@@ -3,10 +3,11 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 
+using _SideScrollingGame.Classes;
 using _SideScrollingGame.Content;
 using _SideScrollingGame.Manager;
-using _SideScrollingGame.Scenes;
 using _SideScrollingGame.Objects;
+using _SideScrollingGame.Scenes;
 
 namespace _SideScrollingGame;
 
@@ -14,9 +15,6 @@ public class Amnesia : Game
 {
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
-
-    private Camera Camera;
-    private Matrix TransformMatrix;
 
     public Amnesia()
     {
@@ -32,8 +30,6 @@ public class Amnesia : Game
         _graphics.PreferredBackBufferHeight = Singleton.Instance.heightScreen;
         _graphics.IsFullScreen = true;
         _graphics.ApplyChanges();
-
-        Camera = new Camera();
 
         base.Initialize();
     }
@@ -54,7 +50,6 @@ public class Amnesia : Game
         }
 
         SceneManager.Instance.Update(gameTime);
-        TransformMatrix = Camera.Follow(Player.Instance.Hitbox);
 
         base.Update(gameTime);
     }
@@ -63,7 +58,7 @@ public class Amnesia : Game
     {
         GraphicsDevice.Clear(Color.White);
         if (Singleton.Instance.isGameStart)
-            _spriteBatch.Begin(transformMatrix: TransformMatrix);
+            _spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: Camera.Instance.Transform);
         else
             _spriteBatch.Begin();
 

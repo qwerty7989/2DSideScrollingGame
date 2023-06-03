@@ -4,11 +4,24 @@ using Microsoft.Xna.Framework;
 
 namespace _SideScrollingGame.Objects
 {
-    internal interface GameObject
+    public class GameObject
     {
-        public void LoadContent(ContentManager Content);
-        public void UnloadContent();
-        public void Update(GameTime gameTime);
-        public void Draw(SpriteBatch spriteBatch);
+        public Texture2D Texture;
+        public Vector2 Position;
+        public Vector2 Velocity;
+
+        public float MoveSpeed;
+        public float Deacceleration;
+        public float MaxSpeed;
+        public float JumpSpeed;
+        public float FallingSpeed;
+
+        public string _rootFolderName;
+
+        public virtual void LoadContent(ContentManager Content) {}
+        public virtual void UnloadContent() {}
+        public virtual void Update(GameTime gameTime) {}
+        public virtual void Draw(SpriteBatch spriteBatch) {}
+        public virtual void Falling(GameTime gameTime) {}
     }
 }

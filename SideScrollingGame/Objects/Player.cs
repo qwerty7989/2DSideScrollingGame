@@ -3,36 +3,34 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+using _SideScrollingGame.Classes;
 using _SideScrollingGame.Content;
 
 namespace _SideScrollingGame.Objects
 {
     public class Player : GameObject
     {
-        private Texture2D Texture;
-        public Vector2 Position;
         public Vector2 PrevPosition;
-        public Vector2 Velocity;
 
         private Texture2D HitboxTexture;
         public Rectangle Hitbox;
         public Rectangle Footbox;
         public Rectangle Headbox;
 
-        private float _playerMovementSpeed = 0.2f;
-        private float _playerDeacceleration = 0.5f;
-        private float _playerFallingSpeed = 32;
-        private float _playerJumpSpeed = 18;
-        public bool PlayerDirection = true;
-        public bool _isPlayerOnGround = false;
+        public bool Direction;
 
         // ? Timer
         private float Timer = 0;
         private float Threshold;
 
-        private string _rootFolderName = "PlayerSprite";
         public Player()
         {
+            _rootFolderName = "PlayerSprite";
+
+            MoveSpeed = 0.2f; Deacceleration = 0.5f; MaxSpeed = 10f;
+            FallingSpeed = 32f; JumpSpeed = 18f;
+            Direction = true;
+
             // ? 70, 134
             Position = new Vector2(1000, 897-134);
             PrevPosition = Position;
@@ -45,78 +43,31 @@ namespace _SideScrollingGame.Objects
             Headbox = new Rectangle((int)Position.X, (int)Position.Y-2, Hitbox.Width, 2);
         }
 
-        public void LoadContent(ContentManager Content)
+        public override void LoadContent(ContentManager Content)
         {
         }
 
-        public void UnloadContent()
+        public override void UnloadContent()
         {
         }
 
-        public void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
+            // ! Non-Zoom
+            Camera.Instance.Follow(Player.Instance.Hitbox, 300, 500, 0, 2200, 50, 50);
+            // ! Zoom
+            //Camera.Instance.Follow(Player.Instance.Hitbox, 300, 100, 0, 2200, 50, 50, 2, 2);
+
             PrevPosition = Position;
-            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-
             KeyboardState keyboard = Keyboard.GetState();
 
-            if (keyboard.IsKeyDown(Keys.Space) && _isPlayerOnGround)
+            if (keyboard.IsKeyDown(Keys.Space) && Velocity.Y == 0)
             {
-                Velocity.Y = -_playerJumpSpeed;
-                _isPlayerOnGround = false;
+                Velocity.Y = -JumpSpeed;
+                Falling(gameTime);
             }
 
-            if (!_isPlayerOnGround)
-            {
-                Velocity.Y += _playerFallingSpeed * deltaTime;
-            }
-
-            if (keyboard.IsKeyDown(Keys.A) || keyboard.IsKeyDown(Keys.D))
-            {
-                if (keyboard.IsKeyDown(Keys.A))
-                {
-                    Velocity.X += -_playerMovementSpeed;
-                    PlayerDirection = false;
-                }
-                else
-                {
-                    Velocity.X += _playerMovementSpeed;
-                    PlayerDirection = true;
-                }
-            }
-            else if (Velocity.X != 0)
-            {
-                Velocity.X += (System.Math.Sign(-Velocity.X)*_playerDeacceleration);
-            }
-
-            // ? Camera
-            if (keyboard.IsKeyDown(Keys.Left))
-                Singleton.Instance.offsetX -= 10;
-            if (keyboard.IsKeyDown(Keys.Right))
-                Singleton.Instance.offsetX += 10;
-            if (keyboard.IsKeyDown(Keys.Up))
-                Singleton.Instance.offsetY -= 10;
-            if (keyboard.IsKeyDown(Keys.Down))
-                Singleton.Instance.offsetY += 10;
-
-            // ? Movement
-            if (PlayerDirection)
-            {
-                Velocity.X = MathHelper.Clamp(Velocity.X, 0, 10);
-            }
-            else
-            {
-                Velocity.X = MathHelper.Clamp(Velocity.X, -10, 0);
-            }
-
-            if (_isPlayerOnGround)
-            {
-                Velocity.Y = MathHelper.Clamp(Velocity.Y, 0, 1f);
-            }
-            else
-            {
-                Velocity.Y = MathHelper.Clamp(Velocity.Y, -_playerJumpSpeed, _playerFallingSpeed);
-            }
+            Movement(keyboard);
 
             Position += Velocity;
             Hitbox.X = (int)Position.X;
@@ -127,7 +78,48 @@ namespace _SideScrollingGame.Objects
             Headbox.Y = (int)Position.Y-2;
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public override void Falling(GameTime gameTime)
+        {
+            Velocity.Y += FallingSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            Velocity.Y = MathHelper.Clamp(Velocity.Y, -JumpSpeed, FallingSpeed);
+        }
+
+        public void Movement(KeyboardState keyboard)
+        {
+            if (keyboard.IsKeyDown(Keys.A) || keyboard.IsKeyDown(Keys.D))
+            {
+                if (keyboard.IsKeyDown(Keys.A))
+                {
+                    Velocity.X += -MoveSpeed;
+                    Direction = false;
+                }
+                else // ? Go right
+                {
+                    Velocity.X += MoveSpeed;
+                    Direction = true;
+                }
+            }
+            else if (Velocity.X != 0) Velocity.X += (System.Math.Sign(-Velocity.X)*Deacceleration);
+
+            // ? Movement
+            if (Direction) Velocity.X = MathHelper.Clamp(Velocity.X, 0, MaxSpeed);
+            else Velocity.X = MathHelper.Clamp(Velocity.X, -MaxSpeed, 0);
+        }
+
+        public void Debugger(KeyboardState keyboard)
+        {
+            // ? Camera
+            if (keyboard.IsKeyDown(Keys.Left))
+                Singleton.Instance.offsetX -= 10;
+            if (keyboard.IsKeyDown(Keys.Right))
+                Singleton.Instance.offsetX += 10;
+            if (keyboard.IsKeyDown(Keys.Up))
+                Singleton.Instance.offsetY -= 10;
+            if (keyboard.IsKeyDown(Keys.Down))
+                Singleton.Instance.offsetY += 10;
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
         {
             if (PlayerDirection)
             {
