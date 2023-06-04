@@ -42,7 +42,7 @@ namespace _SideScrollingGame.Objects
             Velocity = new Vector2(0, 0);
 
             // ? Hitbox
-            HitboxTexture = ContentManagers.Instance.LoadTexture(_rootFolderName, "hitbox");
+            HitboxTexture = ContentManagers.Instance.LoadTexture(_rootFolderName, "player");
             Hitbox = new Rectangle((int)Position.X, (int)Position.Y, HitboxTexture.Width, HitboxTexture.Height);
             Footbox = new Rectangle((int)Position.X, (int)Position.Y+Hitbox.Height, Hitbox.Width, 1);
             Headbox = new Rectangle((int)Position.X, (int)Position.Y-2, Hitbox.Width, 1);
@@ -63,10 +63,12 @@ namespace _SideScrollingGame.Objects
 
         public override void Update(GameTime gameTime)
         {
+            // ? Follow
+            Camera.Instance.Follow(Player.Instance.Hitbox, 960, 540, 1);
             // ! Non-Zoom
             //Camera.Instance.Follow(Player.Instance.Hitbox, 300, 500, 0, 2200, 50, 50);
             // ! Zoom
-            Camera.Instance.Follow(Player.Instance.Hitbox, 300, 100, 0, 2200, 50, 50, 2);
+            //Camera.Instance.Follow(Player.Instance.Hitbox, 300, 100, 0, 2200, 50, 50, 2);
 
             PrevPosition = Position;
             InputManager.Instance.Update();

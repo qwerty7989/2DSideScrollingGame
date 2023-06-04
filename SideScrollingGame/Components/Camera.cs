@@ -29,34 +29,15 @@ namespace _SideScrollingGame.Components
             Transform = Matrix.CreateTranslation(position)*Matrix.CreateTranslation(offset);
         }
 
-        public void Follow(Rectangle target, float offsetX, float offsetY, float limitLeft, float limitRight)
+        public void Follow(Rectangle target, float offsetX, float offsetY, float zoom)
         {
-            target.X = MathHelper.Clamp(target.X, (int)(limitLeft), (int)(limitRight));
-            Vector3 position = new Vector3(target.X + target.Width/2.0f, target.Y + target.Height/2.0f, 0);
-            Vector3 offset = new Vector3(offsetX, offsetY, 0);
-
-            Transform = Matrix.CreateTranslation(position)*Matrix.CreateTranslation(offset);
-        }
-
-        public void Follow(Rectangle target, float offsetX, float offsetY, float limitLeft, float limitRight, float limitBottom, float limitTop)
-        {
-            target.X = MathHelper.Clamp(target.X, (int)(limitLeft), (int)(limitRight));
-            target.Y = MathHelper.Clamp(target.Y, (int)(limitBottom), (int)(limitTop));
-            Vector3 position = new Vector3(target.X + target.Width/2.0f, target.Y + target.Height/2.0f, 0);
-            Vector3 offset = new Vector3(offsetX, offsetY, 0);
-
-            Transform = Matrix.CreateTranslation(-position)*Matrix.CreateTranslation(offset);
-        }
-
-        public void Follow(Rectangle target, float offsetX, float offsetY, float limitLeft, float limitRight, float limitBottom, float limitTop, float zoom)
-        {
-            target.X = MathHelper.Clamp(target.X, (int)(limitLeft), (int)(limitRight));
-            target.Y = MathHelper.Clamp(target.Y, (int)(limitBottom), (int)(limitTop));
+            target.X = MathHelper.Clamp(target.X, (int)(Singleton.Instance.widthScreen / (2.0f)), (int)((target.X*2)-(Singleton.Instance.widthScreen / (2.0f))));
             Vector3 position = new Vector3(target.X + target.Width/2.0f, target.Y + target.Height/2.0f, 0);
             Vector3 offset = new Vector3(offsetX, offsetY, 0);
 
             Transform = Matrix.CreateTranslation(-position)*Matrix.CreateTranslation(offset)*Matrix.CreateScale(new Vector3(zoom, zoom, 1f));
         }
+
 
         public void Follow(Rectangle target, float offsetX, float offsetY, float limitLeft, float limitRight, float limitBottom, float limitTop, float zoom, float rotation = 1)
         {
