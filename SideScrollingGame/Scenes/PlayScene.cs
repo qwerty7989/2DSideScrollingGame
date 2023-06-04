@@ -16,13 +16,11 @@ namespace _SideScrollingGame.Scenes
         private string _rootFolderName = "PlayScene";
         public PlayScene()
         {
-            Singleton.Instance.isGameStart = true;
             SceneManager.Instance.AddScene(SceneManager.SceneName.TilemapScene, 2);
         }
 
         public void LoadContent()
         {
-            _tile = ContentManagers.Instance.LoadTexture(_rootFolderName, "tile");
             _background = ContentManagers.Instance.LoadTexture(_rootFolderName, "background");
         }
 
@@ -43,7 +41,6 @@ namespace _SideScrollingGame.Scenes
         {
             // ? Map - Background
             spriteBatch.Draw(_background, new Vector2(0, 0), Color.White);
-            //spriteBatch.Draw(_tile, new Vector2(0, 897), Color.White);
 
             // ? Player
             Player.Instance.Draw(spriteBatch);

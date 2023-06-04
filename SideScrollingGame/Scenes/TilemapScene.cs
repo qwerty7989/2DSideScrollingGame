@@ -17,7 +17,7 @@ namespace _SideScrollingGame.Scenes
         private int _tileWidth;
         private int _tileHeight;
 
-        private List<Rectangle> _collisionRects;
+        public List<Rectangle> _collisionRects;
 
         private string _rootFolderName = "PlayScene";
         public void LoadContent()
@@ -41,6 +41,8 @@ namespace _SideScrollingGame.Scenes
                     Player.Instance.Position.Y = (float)tile.Y;
                 }
             }
+
+            Singleton.Instance.TileMapCollisionRects = _collisionRects;
         }
 
         public void UnloadContent()
@@ -49,80 +51,6 @@ namespace _SideScrollingGame.Scenes
 
         public void Update(GameTime gameTime)
         {
-            Vector2 initPos = Player.Instance.PrevPosition;
-            Vector2 nextPos = Player.Instance.Position + Player.Instance.Velocity;
-
-            Rectangle nextRec = new Rectangle((int)nextPos.X, (int)nextPos.Y, Player.Instance.Hitbox.Width, Player.Instance.Hitbox.Height);
-
-            // ? Check X axis
-            foreach (Rectangle rect in _collisionRects)
-            {
-                if (rect.Intersects(nextRec) && !(Player.Instance.Footbox.Y >= rect.Y && Player.Instance.Footbox.Y <= rect.Y+1) && !rect.Intersects(Player.Instance.Headbox))
-                {
-                    if (Player.Instance.Velocity.X > 0)
-                    {
-                        if (nextRec.X + nextRec.Width > rect.X && nextRec.X < rect.X)
-                        {
-                            Player.Instance.Position.X = rect.X - Player.Instance.Hitbox.Width;
-                            Player.Instance.Velocity.X = 0;
-                            if (Player.Instance._isPlayerOnGround) Player.Instance.Velocity.Y = 0;
-                            break;
-                        }
-                    }
-                    else if (Player.Instance.Velocity.X < 0)
-                    {
-                        if (nextRec.X < rect.X + rect.Width && nextRec.X + nextRec.Width > rect.X + rect.Width)
-                        {
-                            Player.Instance.Position.X = rect.X + rect.Width + 0.21f;
-                            Player.Instance.Velocity.X = 0;
-                            if (Player.Instance._isPlayerOnGround) Player.Instance.Velocity.Y = 0;
-                            break;
-                        }
-                    }
-                }
-            }
-
-            // ? Check Y axis
-            bool onGround = false;
-            foreach (Rectangle rect in _collisionRects)
-            {
-                if (rect.Intersects(Player.Instance.Footbox))
-                {
-                    onGround = true;
-                }
-
-                if (rect.Intersects(nextRec))
-                {
-                    if (Player.Instance.Velocity.Y < 0)
-                    {
-                        if (Player.Instance.Headbox.Y < rect.Y + rect.Width && Player.Instance.Headbox.Y > rect.Y && ((Player.Instance.Headbox.X < rect.X + rect.Width && Player.Instance.Headbox.X > 0) || (Player.Instance.Headbox.X + Player.Instance.Headbox.Width > rect.X && Player.Instance.Headbox.X + Player.Instance.Headbox.Width < rect.X + rect.Width)))
-                        {
-                            Player.Instance.Position.Y = rect.Y + rect.Height;
-                            Player.Instance.Velocity.Y = 0;
-                        }
-                        else if (Player.Instance.Footbox.Y >= rect.Y && Player.Instance.Footbox.Y <= rect.Y)
-                        {
-                            Player.Instance.Position.Y = rect.Y - Player.Instance.Hitbox.Height;
-                            Player.Instance._isPlayerOnGround = true;
-                            break;
-                        }
-                    }
-                    if (Player.Instance.Velocity.Y > 0)
-                    {
-                        if ((nextRec.X >= rect.X && nextRec.X + nextRec.Width <= rect.X + rect.Width) || rect.Intersects(Player.Instance.Footbox))
-                        {
-                            Player.Instance.Position.Y = rect.Y - Player.Instance.Hitbox.Height;
-                            Player.Instance._isPlayerOnGround = true;
-                            break;
-                        }
-                    }
-                }
-            }
-
-            if (!onGround)
-            {
-                Player.Instance._isPlayerOnGround = false;
-            }
         }
 
         public void Draw(SpriteBatch spriteBatch)

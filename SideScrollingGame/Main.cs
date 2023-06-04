@@ -57,10 +57,7 @@ public class Amnesia : Game
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(Color.White);
-        if (Singleton.Instance.isGameStart)
-            _spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: Camera.Instance.Transform);
-        else
-            _spriteBatch.Begin();
+        _spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: Camera.Instance.Transform);
 
         SceneManager.Instance.Draw(_spriteBatch);
 

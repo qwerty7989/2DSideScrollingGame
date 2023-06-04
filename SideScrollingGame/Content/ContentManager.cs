@@ -17,7 +17,7 @@ namespace _SideScrollingGame.Content
             return tmpTexture2D;
         }
 
-        public (Texture2D, Rectangle[]) LoadSprite(string root, string path, int amount, int step)
+        public Rectangle[] LoadSprite(string root, string path, int amount, int step)
         {
             Texture2D tmpTexture2D = contentManager.Load<Texture2D>(root+"/"+path);
             int widthStep = tmpTexture2D.Width / amount;
@@ -26,7 +26,7 @@ namespace _SideScrollingGame.Content
             {
                 spriteRectangles[i] = new Rectangle(widthStep * i, 0, step, tmpTexture2D.Height);
             }
-            return (tmpTexture2D, spriteRectangles);
+            return spriteRectangles;
         }
 
         // ? Singleton

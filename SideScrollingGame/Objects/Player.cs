@@ -32,8 +32,7 @@ namespace _SideScrollingGame.Objects
             Direction = true;
 
             // ? 70, 134
-            Position = new Vector2(1000, 897-134);
-            PrevPosition = Position;
+            Position = new Vector2(1000, 897-134); PrevPosition = Position;
             Velocity = new Vector2();
 
             // ? Hitbox
@@ -54,9 +53,9 @@ namespace _SideScrollingGame.Objects
         public override void Update(GameTime gameTime)
         {
             // ! Non-Zoom
-            Camera.Instance.Follow(Player.Instance.Hitbox, 300, 500, 0, 2200, 50, 50);
+            //Camera.Instance.Follow(Player.Instance.Hitbox, 300, 500, 0, 2200, 50, 50);
             // ! Zoom
-            //Camera.Instance.Follow(Player.Instance.Hitbox, 300, 100, 0, 2200, 50, 50, 2, 2);
+            Camera.Instance.Follow(Player.Instance.Hitbox, 300, 100, 0, 2200, 50, 50, 2);
 
             PrevPosition = Position;
             KeyboardState keyboard = Keyboard.GetState();
@@ -106,6 +105,24 @@ namespace _SideScrollingGame.Objects
             else Velocity.X = MathHelper.Clamp(Velocity.X, -MaxSpeed, 0);
         }
 
+        //public bool CheckCollision()
+        //{
+
+        //    // ? Check X axis
+        //    foreach (Rectangle rect in _collisionRects)
+        //    {
+
+        //    }
+
+        //    // ? Check Y axis
+        //    foreach (Rectangle rect in _collisionRects)
+        //    {
+
+        //    }
+
+        //    return false;
+        //}
+
         public void Debugger(KeyboardState keyboard)
         {
             // ? Camera
@@ -121,14 +138,8 @@ namespace _SideScrollingGame.Objects
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if (PlayerDirection)
-            {
-                spriteBatch.Draw(HitboxTexture, Position, Color.White);
-            }
-            else
-            {
-                spriteBatch.Draw(HitboxTexture, Position, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.FlipHorizontally, 0f);
-            }
+            if (Direction) spriteBatch.Draw(HitboxTexture, Position, Color.White);
+            else spriteBatch.Draw(HitboxTexture, Position, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.FlipHorizontally, 0f);
         }
 
         // ? Singleton
