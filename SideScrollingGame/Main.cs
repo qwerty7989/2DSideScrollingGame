@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 
-using _SideScrollingGame.Classes;
+using _SideScrollingGame.Components;
 using _SideScrollingGame.Content;
 using _SideScrollingGame.Manager;
 using _SideScrollingGame.Objects;

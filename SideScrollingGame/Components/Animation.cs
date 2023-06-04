@@ -2,7 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace _SideScrollingGame.Classes
+namespace _SideScrollingGame.Components
 {
     public class Animation
     {

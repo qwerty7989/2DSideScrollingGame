@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework;
 
-namespace _SideScrollingGame.Classes
+namespace _SideScrollingGame.Components
 {
     public class Camera
     {

@@ -11,10 +11,13 @@ namespace _SideScrollingGame.Objects
         public Vector2 Velocity;
 
         public float MoveSpeed;
+        public float Acceleration;
         public float Deacceleration;
         public float MaxSpeed;
         public float JumpSpeed;
         public float FallingSpeed;
+        public float MaxFallingSpeed;
+        public float Gravity;
 
         public string _rootFolderName;
 
