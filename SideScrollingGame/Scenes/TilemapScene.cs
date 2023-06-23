@@ -22,7 +22,7 @@ namespace _SideScrollingGame.Scenes
         private string _rootFolderName = "PlayScene";
         public void LoadContent()
         {
-            _map = new TmxMap("Content/PlayScene/PlayMap.tmx");
+            _map = new TmxMap("Content/PlayScene/Map.tmx");
             _tileset = ContentManagers.Instance.LoadTexture(_rootFolderName, _map.Tilesets[0].Name.ToString());
             _tileWidth = _map.Tilesets[0].TileWidth;
             _tileHeight = _map.Tilesets[0].TileHeight;
